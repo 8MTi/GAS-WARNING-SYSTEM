@@ -13,7 +13,7 @@
 
 // WiFi credentials
 // char ssid[] = "";
-char ssid[] = "";
+char ssid[] = "UET-Wifi-Office-Free 2.4Ghz";
 char pass[] = "";
 
 // Biến nhận dữ liệu
@@ -49,7 +49,7 @@ void sendToBlynk() {
     Blynk.virtualWrite(V0, system_active); // Cập nhật trạng thái switch V0
 
     // Kiểm tra ngưỡng gas và gửi cảnh báo
-    if (gas > 2000.0) {
+    if (gas > 1000.0) {
         Blynk.logEvent("gas_warning", "Nồng độ khí gas vượt quá 1000 ppm: " + String(gas) + " ppm");
     }
 }

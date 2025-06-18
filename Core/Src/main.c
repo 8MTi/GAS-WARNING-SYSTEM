@@ -142,6 +142,7 @@ int main(void) {
                 last_update = tick;
             }
         } else {
+        	Servo_SetAngle(0);
             LCD_SetCursor(0, 0);
             LCD_SendString("Gas:---- ppm    ");
             LCD_SetCursor(1, 0);
