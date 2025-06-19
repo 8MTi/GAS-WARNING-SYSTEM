@@ -13,15 +13,6 @@ void RGB_LED_Init(void) {
     RGB_GPIO_PORT->ODR &= ~((1U << RGB_RED_PIN) | (1U << RGB_GREEN_PIN) | (1U << RGB_BLUE_PIN));
 }
 
-void TIM2_Init(void) {
-    RCC->APB1ENR |= RCC_APB1ENR_TIM2EN;
-    TIM2->CR1 = 0;
-    TIM2->PSC = (SystemCoreClock / 1000000) - 1;
-    TIM2->ARR = 10000;
-    TIM2->DIER |= TIM_DIER_UIE;
-    NVIC_EnableIRQ(TIM2_IRQn);
-}
-
 void RGB_LED_SetState(uint8_t alert_state, uint8_t system_active, float ppm) {
     RGB_GPIO_PORT->ODR &= ~((1U << RGB_RED_PIN) | (1U << RGB_GREEN_PIN) | (1U << RGB_BLUE_PIN));
 
@@ -56,6 +47,15 @@ void RGB_LED_SetState(uint8_t alert_state, uint8_t system_active, float ppm) {
             RGB_GPIO_PORT->ODR |= (1U << RGB_RED_PIN);
         }
     }
+}
+
+void TIM2_Init(void) {
+    RCC->APB1ENR |= RCC_APB1ENR_TIM2EN;
+    TIM2->CR1 = 0;
+    TIM2->PSC = (SystemCoreClock / 1000000) - 1;
+    TIM2->ARR = 10000;
+    TIM2->DIER |= TIM_DIER_UIE;
+    NVIC_EnableIRQ(TIM2_IRQn);
 }
 
 void TIM2_IRQHandler(void) {

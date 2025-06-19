@@ -1,0 +1,5 @@
+../Drivers/CMSIS/Include/core_cm4.h:1684:22:__NVIC_EnableIRQ	2
+../Drivers/CMSIS/Include/core_cm4.h:1814:22:__NVIC_SetPriority	2
+../Core/Src/switch.c:9:6:Switch_Init	1
+../Core/Src/switch.c:32:6:EXTI0_IRQHandler	4
+../Core/Src/switch.c:42:6:EXTI15_10_IRQHandler	4

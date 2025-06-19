@@ -1,5 +1,6 @@
 #include "stm32f4xx.h"
 #include "system_config.h"
+#include "switch.h"
 #include "i2c_lcd.h"
 #include "mq2_sensor.h"
 #include "relay.h"
@@ -11,13 +12,9 @@
 int main(void) {
     SystemClock_Config();
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
-    GPIOA->MODER |= (1 << 10);
-    GPIOA->ODR &= ~(1 << 5);
-    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
-    GPIOC->MODER &= ~(3U << (13 * 2));
-    GPIOC->PUPDR |= (1U << (13 * 2));
-    GPIOC->MODER &= ~(3U << (0 * 2));
-    GPIOC->PUPDR |= (1U << (0 * 2));
+    GPIOA->MODER |= (1 << 10); // PA5 output
+    GPIOA->ODR &= ~(1 << 5); // Tắt LED PA5
+    Switch_Init();
     I2C1_Init();
     LCD_Init();
     ADC_Init();
@@ -33,10 +30,10 @@ int main(void) {
     float ppm;
     uint8_t system_active = 0;
     uint8_t last_system_active = 0;
-    uint8_t last_sw1_state = 1;
-    uint8_t last_sw2_state = 1;
     uint8_t alert_state;
     uint32_t last_update = 0;
+    uint8_t last_sw1_pressed = 0;
+    uint8_t last_sw2_pressed = 0;
 
     LCD_SetCursor(0, 0);
     LCD_SendString("MQ2 Gas Monitor ");
@@ -52,15 +49,13 @@ int main(void) {
     UART1_SendString(uart_buffer);
 
     while (1) {
-        uint8_t current_sw1_state = (GPIOC->IDR & (1 << 13)) ? 1 : 0;
-        if (last_sw1_state == 1 && current_sw1_state == 0) {
+        if (sw1_pressed && !last_sw1_pressed) {
             system_active = !system_active;
-            delay_ms(100);
+            sw1_pressed = 0;
         }
-        last_sw1_state = current_sw1_state;
+        last_sw1_pressed = sw1_pressed;
 
-        uint8_t current_sw2_state = (GPIOC->IDR & (1 << 0)) ? 1 : 0;
-        if (last_sw2_state == 1 && current_sw2_state == 0) {
+        if (sw2_pressed && !last_sw2_pressed) {
             system_active = 0;
             last_system_active = 0;
             RELAY1_GPIO_PORT->ODR &= ~(1U << RELAY1_PIN);
@@ -74,9 +69,9 @@ int main(void) {
             delay_ms(2000);
             snprintf(uart_buffer, sizeof(uart_buffer), "S%d\n", system_active);
             UART1_SendString(uart_buffer);
-            delay_ms(100);
+            sw2_pressed = 0;
         }
-        last_sw2_state = current_sw2_state;
+        last_sw2_pressed = sw2_pressed;
 
         if (USART1->SR & USART_SR_RXNE) {
             UART1_ReceiveString(uart_cmd, sizeof(uart_cmd));
@@ -142,7 +137,6 @@ int main(void) {
                 last_update = tick;
             }
         } else {
-        	Servo_SetAngle(0);
             LCD_SetCursor(0, 0);
             LCD_SendString("Gas:---- ppm    ");
             LCD_SetCursor(1, 0);
@@ -155,3 +149,4 @@ int main(void) {
         RGB_LED_SetState(alert_state, system_active, ppm);
     }
 }
+

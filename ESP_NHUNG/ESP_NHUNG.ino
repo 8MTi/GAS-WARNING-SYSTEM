@@ -13,7 +13,7 @@
 
 // WiFi credentials
 // char ssid[] = "";
-char ssid[] = "UET-Wifi-Office-Free 2.4Ghz";
+char ssid[] = "P 603";
 char pass[] = "";
 
 // Biến nhận dữ liệu
