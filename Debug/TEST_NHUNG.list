@@ -3032,13 +3032,13 @@ void TIM2_IRQHandler(void) {
 void Servo_Init(void) {
  8001cd0:	b480      	push	{r7}
  8001cd2:	af00      	add	r7, sp, #0
-	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN; // Kích hoạt clock cho GPIOA
+	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
  8001cd4:	4b33      	ldr	r3, [pc, #204]	@ (8001da4 <Servo_Init+0xd4>)
  8001cd6:	6b1b      	ldr	r3, [r3, #48]	@ 0x30
  8001cd8:	4a32      	ldr	r2, [pc, #200]	@ (8001da4 <Servo_Init+0xd4>)
  8001cda:	f043 0301 	orr.w	r3, r3, #1
  8001cde:	6313      	str	r3, [r2, #48]	@ 0x30
-	RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;  // Kích hoạt clock cho TIM3
+	RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
  8001ce0:	4b30      	ldr	r3, [pc, #192]	@ (8001da4 <Servo_Init+0xd4>)
  8001ce2:	6c1b      	ldr	r3, [r3, #64]	@ 0x40
  8001ce4:	4a2f      	ldr	r2, [pc, #188]	@ (8001da4 <Servo_Init+0xd4>)
@@ -3050,7 +3050,7 @@ void Servo_Init(void) {
  8001cf0:	4a2d      	ldr	r2, [pc, #180]	@ (8001da8 <Servo_Init+0xd8>)
  8001cf2:	f423 5340 	bic.w	r3, r3, #12288	@ 0x3000
  8001cf6:	6013      	str	r3, [r2, #0]
-	GPIOA->MODER |= (2U << (SERVO_PIN * 2)); // Chế độ Alternate Function
+	GPIOA->MODER |= (2U << (SERVO_PIN * 2));
  8001cf8:	4b2b      	ldr	r3, [pc, #172]	@ (8001da8 <Servo_Init+0xd8>)
  8001cfa:	681b      	ldr	r3, [r3, #0]
  8001cfc:	4a2a      	ldr	r2, [pc, #168]	@ (8001da8 <Servo_Init+0xd8>)
@@ -3062,13 +3062,13 @@ void Servo_Init(void) {
  8001d08:	4a27      	ldr	r2, [pc, #156]	@ (8001da8 <Servo_Init+0xd8>)
  8001d0a:	f023 0340 	bic.w	r3, r3, #64	@ 0x40
  8001d0e:	6053      	str	r3, [r2, #4]
-	GPIOA->OSPEEDR |= (3U << (SERVO_PIN * 2)); // Tốc độ cao
+	GPIOA->OSPEEDR |= (3U << (SERVO_PIN * 2));
  8001d10:	4b25      	ldr	r3, [pc, #148]	@ (8001da8 <Servo_Init+0xd8>)
  8001d12:	689b      	ldr	r3, [r3, #8]
  8001d14:	4a24      	ldr	r2, [pc, #144]	@ (8001da8 <Servo_Init+0xd8>)
  8001d16:	f443 5340 	orr.w	r3, r3, #12288	@ 0x3000
  8001d1a:	6093      	str	r3, [r2, #8]
-	GPIOA->AFR[0] |= (2U << (SERVO_PIN * 4)); // AF2 cho TIM3_CH1 (PA6)
+	GPIOA->AFR[0] |= (2U << (SERVO_PIN * 4));
  8001d1c:	4b22      	ldr	r3, [pc, #136]	@ (8001da8 <Servo_Init+0xd8>)
  8001d1e:	6a1b      	ldr	r3, [r3, #32]
  8001d20:	4a21      	ldr	r2, [pc, #132]	@ (8001da8 <Servo_Init+0xd8>)
@@ -3078,7 +3078,7 @@ void Servo_Init(void) {
  8001d28:	4b20      	ldr	r3, [pc, #128]	@ (8001dac <Servo_Init+0xdc>)
  8001d2a:	2200      	movs	r2, #0
  8001d2c:	601a      	str	r2, [r3, #0]
-	TIM3->PSC = (SystemCoreClock / 1000000) - 1; // Tick 1µs
+	TIM3->PSC = (SystemCoreClock / 1000000) - 1;
  8001d2e:	4b20      	ldr	r3, [pc, #128]	@ (8001db0 <Servo_Init+0xe0>)
  8001d30:	681b      	ldr	r3, [r3, #0]
  8001d32:	4a20      	ldr	r2, [pc, #128]	@ (8001db4 <Servo_Init+0xe4>)
@@ -3087,45 +3087,45 @@ void Servo_Init(void) {
  8001d3a:	4a1c      	ldr	r2, [pc, #112]	@ (8001dac <Servo_Init+0xdc>)
  8001d3c:	3b01      	subs	r3, #1
  8001d3e:	6293      	str	r3, [r2, #40]	@ 0x28
-	TIM3->ARR = SERVO_PWM_PERIOD - 1; // Chu kỳ 20ms
+	TIM3->ARR = SERVO_PWM_PERIOD - 1;
  8001d40:	4b1a      	ldr	r3, [pc, #104]	@ (8001dac <Servo_Init+0xdc>)
  8001d42:	f644 621f 	movw	r2, #19999	@ 0x4e1f
  8001d46:	62da      	str	r2, [r3, #44]	@ 0x2c
-	TIM3->CCMR1 &= ~(TIM_CCMR1_OC1M); // Xóa OC1M
+	TIM3->CCMR1 &= ~(TIM_CCMR1_OC1M);
  8001d48:	4b18      	ldr	r3, [pc, #96]	@ (8001dac <Servo_Init+0xdc>)
  8001d4a:	699b      	ldr	r3, [r3, #24]
  8001d4c:	4a17      	ldr	r2, [pc, #92]	@ (8001dac <Servo_Init+0xdc>)
  8001d4e:	f023 0370 	bic.w	r3, r3, #112	@ 0x70
  8001d52:	6193      	str	r3, [r2, #24]
-	TIM3->CCMR1 |= (6U << TIM_CCMR1_OC1M_Pos); // PWM mode 1
+	TIM3->CCMR1 |= (6U << TIM_CCMR1_OC1M_Pos);
  8001d54:	4b15      	ldr	r3, [pc, #84]	@ (8001dac <Servo_Init+0xdc>)
  8001d56:	699b      	ldr	r3, [r3, #24]
  8001d58:	4a14      	ldr	r2, [pc, #80]	@ (8001dac <Servo_Init+0xdc>)
  8001d5a:	f043 0360 	orr.w	r3, r3, #96	@ 0x60
  8001d5e:	6193      	str	r3, [r2, #24]
-	TIM3->CCMR1 |= TIM_CCMR1_OC1PE; // Bật preload
+	TIM3->CCMR1 |= TIM_CCMR1_OC1PE;
  8001d60:	4b12      	ldr	r3, [pc, #72]	@ (8001dac <Servo_Init+0xdc>)
  8001d62:	699b      	ldr	r3, [r3, #24]
  8001d64:	4a11      	ldr	r2, [pc, #68]	@ (8001dac <Servo_Init+0xdc>)
  8001d66:	f043 0308 	orr.w	r3, r3, #8
  8001d6a:	6193      	str	r3, [r2, #24]
-	TIM3->CCER |= TIM_CCER_CC1E; // Bật kênh 1
+	TIM3->CCER |= TIM_CCER_CC1E;
  8001d6c:	4b0f      	ldr	r3, [pc, #60]	@ (8001dac <Servo_Init+0xdc>)
  8001d6e:	6a1b      	ldr	r3, [r3, #32]
  8001d70:	4a0e      	ldr	r2, [pc, #56]	@ (8001dac <Servo_Init+0xdc>)
  8001d72:	f043 0301 	orr.w	r3, r3, #1
  8001d76:	6213      	str	r3, [r2, #32]
-	TIM3->CCR1 = SERVO_MIN_PULSE; // Độ rộng xung ban đầu (0°)
+	TIM3->CCR1 = SERVO_MIN_PULSE;
  8001d78:	4b0c      	ldr	r3, [pc, #48]	@ (8001dac <Servo_Init+0xdc>)
  8001d7a:	f44f 72fa 	mov.w	r2, #500	@ 0x1f4
  8001d7e:	635a      	str	r2, [r3, #52]	@ 0x34
-	TIM3->EGR |= TIM_EGR_UG; // Cập nhật thanh ghi
+	TIM3->EGR |= TIM_EGR_UG;
  8001d80:	4b0a      	ldr	r3, [pc, #40]	@ (8001dac <Servo_Init+0xdc>)
  8001d82:	695b      	ldr	r3, [r3, #20]
  8001d84:	4a09      	ldr	r2, [pc, #36]	@ (8001dac <Servo_Init+0xdc>)
  8001d86:	f043 0301 	orr.w	r3, r3, #1
  8001d8a:	6153      	str	r3, [r2, #20]
-	TIM3->CR1 |= TIM_CR1_CEN; // Bật Timer
+	TIM3->CR1 |= TIM_CR1_CEN;
  8001d8c:	4b07      	ldr	r3, [pc, #28]	@ (8001dac <Servo_Init+0xdc>)
  8001d8e:	681b      	ldr	r3, [r3, #0]
  8001d90:	4a06      	ldr	r2, [pc, #24]	@ (8001dac <Servo_Init+0xdc>)
@@ -3169,7 +3169,7 @@ void Servo_SetAngle(uint16_t angle) {
  8001de2:	1ad3      	subs	r3, r2, r3
  8001de4:	f503 73fa 	add.w	r3, r3, #500	@ 0x1f4
  8001de8:	60fb      	str	r3, [r7, #12]
-	TIM3->CCR1 = pulse; // Sử dụng CCR1 cho kênh 1
+	TIM3->CCR1 = pulse;
  8001dea:	4a05      	ldr	r2, [pc, #20]	@ (8001e00 <Servo_SetAngle+0x48>)
  8001dec:	68fb      	ldr	r3, [r7, #12]
  8001dee:	6353      	str	r3, [r2, #52]	@ 0x34
